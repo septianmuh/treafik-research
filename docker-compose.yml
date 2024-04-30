@@ -56,12 +56,18 @@ services:
     networks:
       - traefik-network
 
-  json-server:
+  jsonserver:
     build:
       context: ./jsonserver
       dockerfile: Dockerfile
     ports:
       - "3100"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jsonserver.rule=Host(`traefik.localhost`) && PathPrefix(`/jsonserver`)"
+      - "traefik.http.routers.jsonserver.middlewares=jsonserver-stripprefix"
+      - "traefik.http.middlewares.jsonserver-stripprefix.stripprefix.prefixes=/jsonserver"
+      - "traefik.http.services.jsonserver.loadbalancer.server.port=8030"
     volumes:
       - /jsonserver/db.json:/app/db.json
     networks:
