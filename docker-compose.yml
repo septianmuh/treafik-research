@@ -67,9 +67,9 @@ services:
       - "traefik.http.routers.jsonserver.rule=Host(`traefik.localhost`) && PathPrefix(`/jsonserver`)"
       - "traefik.http.routers.jsonserver.middlewares=jsonserver-stripprefix"
       - "traefik.http.middlewares.jsonserver-stripprefix.stripprefix.prefixes=/jsonserver"
-      - "traefik.http.services.jsonserver.loadbalancer.server.port=8030"
+      - "traefik.http.services.jsonserver.loadbalancer.server.port=3100"
     volumes:
-      - /jsonserver/db.json:/app/db.json
+      - ./jsonserver/db.json:/app/db.json
     networks:
       - traefik-network
 
