@@ -1,8 +1,45 @@
 {
-    "posts": [
-      { "id": 1, "title": "Post 1", "body": "Lorem ipsum" },
-      { "id": 2, "title": "Post 2", "body": "Dolor sit amet" },
-      { "id": 3, "title": "Post 3", "body": "Consectetur adipiscing elit" }
-    ]
+  "posts": [
+    { "id": 1, "title": "Post 1", "body": "Lorem ipsum" },
+    { "id": 2, "title": "Post 2", "body": "Dolor sit amet" },
+    { "id": 3, "title": "Post 3", "body": "Consectetur adipiscing elit" }
+  ],
+  "login": {
+    "responseCode": "00",
+    "responseMessage": "Successfully",
+    "responseData": {
+      "pernr": "90144893",
+      "nip": "",
+      "sname": "Shavira Putri Virissya",
+      "werks": "KP00",
+      "btrtl": "KP01",
+      "kostl": "PS19019",
+      "orgeh": "70238340",
+      "stell": "",
+      "werksTx": "Kantor Pusat",
+      "btrtlTx": "Kantor Pusat",
+      "kostlTx": "DIVISI APPLICATION MANAGEMENT & OPERATIO",
+      "orgehTx": "APPLICATION MANAGEMENT & OPERATION DIVIS",
+      "stellTx": "Associate IT - Project Officer 1 Level 2",
+      "plansTx": "Associate IT - Project Officer 1 Level 2",
+      "jgpg": "",
+      "orgehPgs": "",
+      "plansPgs": "",
+      "orgehPgsTx": "",
+      "plansPgsTx": "",
+      "sisaCt": "",
+      "sisaCb": "",
+      "agama": "Islam",
+      "tipeUker": "KP",
+      "addArea": "KP",
+      "status": "",
+      "branch": "229",
+      "hilfm": "",
+      "htext": "",
+      "hilfmPgs": "",
+      "htextPgs": "",
+      "kawin": ""
+    }
+  }
 }
   

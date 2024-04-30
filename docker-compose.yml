@@ -46,9 +46,9 @@ services:
       - "8030"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nodeapi.rule=Host(`traefik.localhost`) && PathPrefix(`/nodeapi`)"
+      - "traefik.http.routers.nodeapi.rule=Host(`traefik.localhost`) && PathPrefix(`/api`)"
       - "traefik.http.routers.nodeapi.middlewares=nodeapi-stripprefix"
-      - "traefik.http.middlewares.nodeapi-stripprefix.stripprefix.prefixes=/nodeapi"
+      - "traefik.http.middlewares.nodeapi-stripprefix.stripprefix.prefixes=/api"
       - "traefik.http.services.nodeapi.loadbalancer.server.port=8030"
     volumes:
       - ./node-api:/app
@@ -75,4 +75,3 @@ services:
 
 networks:
   traefik-network:
-    external: true
