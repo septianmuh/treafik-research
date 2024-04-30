@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  traefik:
+    image: traefik:v2.11
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedByDefault=false"
+      # - "--entrypoints.web.address=:80"
+
+    ports:
+      - "80:80"
+      - "8080:8080"
+
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  golang-api:
+    build:
+      context: ./golang-api
+
+    image: golang-api:latest
+
+    ports:
+      - "8020"
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.golang-api.rule=Host(`api.golang.localhost`)"
+
+  node-api:
+    build:
+      context: ./node-api
+
+    image: nodejs
+
+    ports:
+      - "8030"
+    
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.node-api.rule=Host(`api.nodejs.localhost`)"

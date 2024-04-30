@@ -5,39 +5,68 @@ services:
     image: traefik:v2.11
     command:
       - "--api.insecure=true"
-      - "--providers.docker=true"
+      - "--providers.docker"
       - "--providers.docker.exposedByDefault=false"
-      # - "--entrypoints.web.address=:80"
-
     ports:
       - "80:80"
       - "8080:8080"
-
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
+    labels:
+      - "traefik.http.routers.traefik.rule=Host(`traefik.localhost`) && PathPrefix(`/dashboard`)"
+      - "traefik.http.routers.traefik.middlewares=dashboard-stripprefix"
+      - "traefik.http.middlewares.traefik-stripprefix.stripprefix.prefixes=/dashboard"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
+    networks:
+      - traefik-network
 
-  golang-api:
+  golangapi:
     build:
-      context: ./golang-api
-
-    image: golang-api:latest
-
+      context: ./golang-api #get from apps
+    image: golang-api
     ports:
       - "8020"
-
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.golang-api.rule=Host(`api.golang.localhost`)"
+      - "traefik.http.routers.golangapi.rule=Host(`traefik.localhost`) && PathPrefix(`/golangapi`)"
+      - "traefik.http.routers.golangapi.middlewares=golangapi-stripprefix"
+      - "traefik.http.middlewares.golangapi-stripprefix.stripprefix.prefixes=/golangapi"
+      - "traefik.http.services.golangapi.loadbalancer.server.port=8020"
+    volumes:
+      - ./golang-api:/go/src/app
+    networks:
+      - traefik-network
 
-  node-api:
+  nodeapi:
     build:
       context: ./node-api
-
     image: nodejs
-
     ports:
       - "8030"
-    
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.node-api.rule=Host(`api.nodejs.localhost`)"
+      - "traefik.http.routers.nodeapi.rule=Host(`traefik.localhost`) && PathPrefix(`/nodeapi`)"
+      - "traefik.http.routers.nodeapi.middlewares=nodeapi-stripprefix"
+      - "traefik.http.middlewares.nodeapi-stripprefix.stripprefix.prefixes=/nodeapi"
+      - "traefik.http.services.nodeapi.loadbalancer.server.port=8030"
+    volumes:
+      - ./node-api:/app
+      - ./node_modules:/app/node_modules
+    networks:
+      - traefik-network
+
+  json-server:
+    build:
+      context: ./jsonserver
+      dockerfile: Dockerfile
+    ports:
+      - "3100"
+    volumes:
+      - /jsonserver/db.json:/app/db.json
+    networks:
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true
